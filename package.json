@@ -1,6 +1,6 @@
 {
-  "name": "mooz",
-  "description": "Mooz: A video conferencing app",
+  "name": "yoom",
+  "description": "Yoom: A video conferencing app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
