@@ -9,6 +9,7 @@ const Home = () => {
   const date = new Intl.DateTimeFormat("en-us", {
     dateStyle: "full",
   }).format(now);
+
   return (
     <section className="flex flex-col size-full gap-10 text-white">
       <div className="h-[300px] w-full rounded-[20px] bg-hero bg-cover">
