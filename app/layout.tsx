@@ -1,3 +1,5 @@
+import "@stream-io/video-react-sdk/dist/css/styles.css";
+import "react-datepicker/dist/react-datepicker.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -7,8 +9,11 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Yoom: A video conferencing app",
-  description: "Crafted with 💗 by Anish Kumar Arya",
+  title: "Yoom",
+  description: "A video conferencing app",
+  icons: {
+    icon: "/icons/logo.svg",
+  },
 };
 
 export default function RootLayout({

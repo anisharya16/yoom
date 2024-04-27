@@ -7,8 +7,8 @@ import { Button } from "./ui/button";
 interface MeetingModalProps {
   isOpen: boolean;
   title: string;
-  className: string;
-  buttonText: string;
+  className?: string;
+  buttonText?: string;
   buttonIcon?: string;
   onClose: () => void;
   handleClick: () => void;
