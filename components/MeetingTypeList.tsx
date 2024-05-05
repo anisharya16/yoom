@@ -5,6 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk";
 import { useToast } from "@/components/ui/use-toast";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import ReactDatePicker from "react-datepicker";
 import HomeCard from "./HomeCard";
 import MeetingModal from "./MeetingModal";
@@ -86,14 +87,14 @@ const MeetingTypeList = () => {
         img="/icons/recordings.svg"
         title="View Recordings"
         description="Check out your recordings"
-        handleClick={() => setMeetingState("isJoiningMeeting")}
+        handleClick={() => router.push("/recordings")}
         className="bg-purple-1"
       />
       <HomeCard
         img="/icons/join-meeting.svg"
         title="Join Meeting"
         description="Via inviation link"
-        handleClick={() => router.push("/recordings")}
+        handleClick={() => setMeetingState("isJoiningMeeting")}
         className="bg-yellow-1"
       />
 
@@ -154,6 +155,20 @@ const MeetingTypeList = () => {
         onClose={() => setMeetingState(undefined)}
         handleClick={createMeeting}
       />
+      <MeetingModal
+        isOpen={meetingState === "isJoiningMeeting"}
+        title="Type the link here"
+        className="text-center"
+        buttonText="Join Meeting"
+        onClose={() => setMeetingState(undefined)}
+        handleClick={() => router.push(values.link)}
+      >
+        <Input
+          placeholder="Meeting link"
+          className="border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0"
+          onChange={(e) => setValues({ ...values, link: e.target.value })}
+        />
+      </MeetingModal>
     </section>
   );
 };

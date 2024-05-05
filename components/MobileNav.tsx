@@ -33,7 +33,7 @@ const MobileNav = () => {
               src="/icons/logo.svg"
               width={32}
               height={32}
-              alt="Mooz logo"
+              alt="Yoom logo"
               className="max-sm:size-10"
             />
             <p className="text-[26px] font-extrabold text-white">Yoom</p>
