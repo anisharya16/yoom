@@ -1,47 +1,76 @@
-"use client";
-import { useState, useEffect } from "react";
+'use client';
+import { useEffect, useState } from 'react';
 import {
   DeviceSettings,
   VideoPreview,
   useCall,
-} from "@stream-io/video-react-sdk";
-import { Button } from "./ui/button";
+  useCallStateHooks,
+} from '@stream-io/video-react-sdk';
+
+import Alert from './Alert';
+import { Button } from './ui/button';
 
 const MeetingSetup = ({
   setIsSetupComplete,
 }: {
   setIsSetupComplete: (value: boolean) => void;
 }) => {
-  const [isMicCamToggledOn, setisMicCamToggledOn] = useState(false);
+  // https://getstream.io/video/docs/react/guides/call-and-participant-state/#call-state
+  const { useCallEndedAt, useCallStartsAt } = useCallStateHooks();
+  const callStartsAt = useCallStartsAt();
+  const callEndedAt = useCallEndedAt();
+  const callTimeNotArrived =
+    callStartsAt && new Date(callStartsAt) > new Date();
+  const callHasEnded = !!callEndedAt;
 
   const call = useCall();
-  console.log("inside MeetingSetup: call ->", call);
 
-  if (!call)
-    throw new Error("useCall must be used within StreamCall component");
+  if (!call) {
+    throw new Error(
+      'useStreamCall must be used within a StreamCall component.',
+    );
+  }
+
+  // https://getstream.io/video/docs/react/ui-cookbook/replacing-call-controls/
+  const [isMicCamToggled, setIsMicCamToggled] = useState(false);
 
   useEffect(() => {
-    if (isMicCamToggledOn) {
-      call?.camera.disable();
-      call?.microphone.disable();
+    if (isMicCamToggled) {
+      call.camera.disable();
+      call.microphone.disable();
     } else {
-      call?.camera.enable();
-      call?.microphone.enable();
+      call.camera.enable();
+      call.microphone.enable();
     }
-  }, [isMicCamToggledOn, call?.camera, call?.microphone]);
+  }, [isMicCamToggled, call.camera, call.microphone]);
+
+  if (callTimeNotArrived)
+    return (
+      <Alert
+        title={`Your Meeting has not started yet. It is scheduled for ${callStartsAt.toLocaleString()}`}
+      />
+    );
+
+  if (callHasEnded)
+    return (
+      <Alert
+        title="The call has been ended by the host"
+        iconUrl="/icons/call-ended.svg"
+      />
+    );
 
   return (
-    <div className="flex flex-col h-screen w-full items-center justify-center gap-3 text-white">
-      <h1 className="text-2xl font-bold">Setup</h1>
+    <div className="flex h-screen w-full flex-col items-center justify-center gap-3 text-white">
+      <h1 className="text-center text-2xl font-bold">Setup</h1>
       <VideoPreview />
       <div className="flex h-16 items-center justify-center gap-3">
-        <label className="flex  items-center justify-center gap-2 font-medium">
+        <label className="flex items-center justify-center gap-2 font-medium">
           <input
             type="checkbox"
-            checked={isMicCamToggledOn}
-            onChange={(e) => setisMicCamToggledOn(e.target.checked)}
+            checked={isMicCamToggled}
+            onChange={(e) => setIsMicCamToggled(e.target.checked)}
           />
-          Join with Mic and Camera off
+          Join with mic and camera off
         </label>
         <DeviceSettings />
       </div>
@@ -49,10 +78,11 @@ const MeetingSetup = ({
         className="rounded-md bg-green-500 px-4 py-2.5"
         onClick={() => {
           call.join();
+
           setIsSetupComplete(true);
         }}
       >
-        Join Meeting
+        Join meeting
       </Button>
     </div>
   );
