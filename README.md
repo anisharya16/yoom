@@ -76,6 +76,8 @@ NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 
 NEXT_PUBLIC_STREAM_API_KEY=
 STREAM_SECRET_KEY=
+
+NEXT_PUBLIC_BASE_URL=localhost:3000
 ```
 
 Replace the placeholder values with your actual Clerk & getstream credentials. You can obtain these credentials by signing up on the [Clerk website](https://clerk.com/) and [getstream website](https://getstream.io/)
